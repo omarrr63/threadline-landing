@@ -18,6 +18,7 @@ const teamRoutes = require('./routes/team');
 const integrationsRoutes = require('./routes/integrations');
 const billingRoutes = require('./routes/billing');
 const analyticsRoutes = require('./routes/analytics');
+const jokesRoutes = require('./routes/jokes');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -89,6 +90,7 @@ app.use('/api/team', authenticate, teamRoutes);
 app.use('/api/integrations', authenticate, integrationsRoutes);
 app.use('/api/billing', authenticate, billingRoutes);
 app.use('/api/analytics', authenticate, analyticsRoutes);
+app.use('/api/jokes', jokesRoutes);
 
 // WhatsApp Webhook (No auth required)
 app.post('/api/whatsapp/webhook', require('./routes/webhookHandler'));
@@ -108,6 +110,13 @@ server.listen(PORT, () => {
   console.log(`\n🚀 Threadline Backend Server running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV}`);
   console.log(`🔗 API Base URL: http://localhost:${PORT}/api\n`);
+  console.log('📚 Available Routes:');
+  console.log('   - /api/auth - Authentication');
+  console.log('   - /api/whatsapp - WhatsApp Business API');
+  console.log('   - /api/messages - Messages & Conversations');
+  console.log('   - /api/chatbot - Chatbot & AI Agent');
+  console.log('   - /api/team - Team Management');
+  console.log('   - /api/jokes - Joke Generator 😄\n');
 });
 
 module.exports = { app, io };
