@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threadline — WhatsApp Business, unified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E1A17;
+    --bg-card: #142621;
+    --bg-card-2: #1B322B;
+    --bg-card-3: #0F211C;
+    --accent-jade: #2FA679;
+    --accent-jade-bright: #45D6A0;
+    --accent-amber: #F2B84B;
+    --text: #F2F0EA;
+    --text-muted: #93A9A0;
+    --border: rgba(242,240,234,0.09);
+    --border-bright: rgba(69,214,160,0.35);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,.display{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .mono{
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-jade-bright);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content: '';
+    width: 22px;
+    height: 1px;
+    background: var(--accent-jade-bright);
+  }
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  a{color:inherit; text-decoration:none;}
+
+  /* NAV */
+  nav{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(14,26,23,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height: 76px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:19px;
+  }
+  .logo-mark{
+    width:28px; height:28px;
+    border-radius: 8px 8px 8px 2px;
+    background: linear-gradient(135deg, var(--accent-jade-bright), var(--accent-jade));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo-mark svg{width:15px; height:15px;}
+  .nav-links{
+    display:flex; gap:36px;
+    font-size: 14.5px;
+    color: var(--text-muted);
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    display:flex; align-items:center; gap:20px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor:pointer;
+    border: 1px solid transparent;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background: var(--accent-jade-bright);
+    color: #08150F;
+  }
+  .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 24px rgba(69,214,160,0.25);}
+  .btn-ghost{
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-ghost:hover{ border-color: var(--border-bright); }
+  .btn-sm{ padding:9px 16px; font-size:13.5px;}
+
+  /* HERO */
+  header.hero{
+    padding: 90px 0 60px;
+    position: relative;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 60px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size: clamp(34px, 4.2vw, 54px);
+    line-height: 1.08;
+    margin-bottom: 22px;
+  }
+  .hero h1 em{
+    font-style: normal;
+    color: var(--accent-jade-bright);
+  }
+  .hero p.sub{
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin-bottom: 34px;
+  }
+  .hero-ctas{ display:flex; gap:14px; margin-bottom:38px; }
+  .trust-row{
+    display:flex; gap:28px; flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .trust-row span{ display:flex; align-items:center; gap:7px;}
+  .dot{width:5px; height:5px; border-radius:50%; background:var(--accent-jade-bright);}
+
+  /* PHONE MOCK */
+  .phone-stage{
+    position:relative;
+    display:flex; justify-content:center;
+  }
+  .phone{
+    width: 320px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 14px 14px 20px;
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.6);
+    position:relative;
+  }
+  .phone-head{
+    display:flex; align-items:center; gap:10px;
+    padding: 8px 6px 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .avatar{
+    width:34px; height:34px; border-radius:50%;
+    background: linear-gradient(135deg, var(--accent-amber), #d99530);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk'; font-weight:700; font-size:14px; color:#1a1206;
+  }
+  .phone-head .name{font-size:14px; font-weight:600;}
+  .phone-head .status{font-size:11.5px; color:var(--accent-jade-bright); font-family:'IBM Plex Mono';}
+  .thread{
+    display:flex; flex-direction:column; gap:10px;
+    min-height: 360px;
+  }
+  .bubble{
+    max-width: 82%;
+    padding: 9px 13px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: rise .5s ease forwards;
+  }
+  .bubble.in{
+    align-self:flex-start;
+    background: var(--bg-card-2);
+    border-bottom-left-radius: 3px;
+  }
+  .bubble.out{
+    align-self:flex-end;
+    background: var(--accent-jade);
+    color: #06140F;
+    border-bottom-right-radius: 3px;
+  }
+  .bubble.tag{
+    align-self:center;
+    background: transparent;
+    border: 1px dashed var(--border-bright);
+    color: var(--accent-jade-bright);
+    font-family:'IBM Plex Mono';
+    font-size: 10.5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0);} }
+  .b1{animation-delay:.3s;} .b2{animation-delay:1.1s;} .b3{animation-delay:1.9s;}
+  .b4{animation-delay:2.9s;} .b5{animation-delay:3.7s;} .b6{animation-delay:4.6s;}
+
+  .mask-badge{
+    position:absolute;
+    bottom: -18px; right: 18px;
+    background: var(--bg-card-3);
+    border: 1px solid var(--border-bright);
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-family:'IBM Plex Mono'; font-size: 10.5px;
+    color: var(--text-muted);
+    display:flex; align-items:center; gap:8px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+  .mask-badge b{color:var(--accent-jade-bright); font-weight:500;}
+
+  .ticker{
+    margin-top: 46px;
+    display:inline-flex; align-items:baseline; gap:10px;
+    font-family:'IBM Plex Mono';
+  }
+  .ticker .num{
+    font-family:'Space Grotesk'; font-weight:700; font-size:26px; color:var(--accent-jade-bright);
+  }
+  .ticker .lbl{ font-size:12px; color:var(--text-muted); letter-spacing:.05em;}
+
+  /* SECTION generic */
+  section{ padding: 100px 0; }
+  .section-head{ max-width: 620px; margin-bottom: 56px; }
+  .section-head h2{ font-size: clamp(26px,3vw,36px); margin-bottom:14px; }
+  .section-head p{ color:var(--text-muted); font-size:15.5px; }
+
+  /* STACK / LAYERS */
+  .stack{
+    position:relative;
+    display:flex; flex-direction:column; gap: 0;
+  }
+  .stack::before{
+    content:'';
+    position:absolute; left: 27px; top: 10px; bottom: 10px;
+    width:1px;
+    background: linear-gradient(var(--border-bright), var(--border));
+  }
+  .layer{
+    display:grid;
+    grid-template-columns: 56px 200px 1fr;
+    gap: 24px;
+    align-items:flex-start;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .layer:last-child{ border-bottom:none; }
+  .layer-node{
+    width:56px; height:56px;
+    border-radius:14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    display:flex; align-items:center; justify-content:center;
+    z-index:1;
+  }
+  .layer-node svg{ width:24px; height:24px; stroke:var(--accent-jade-bright); }
+  .layer-label{
+    font-family:'IBM Plex Mono'; font-size:11.5px; letter-spacing:.12em;
+    color: var(--text-muted); padding-top: 16px;
+  }
+  .layer-label b{ display:block; font-family:'Space Grotesk'; font-size:19px; letter-spacing:0; color:var(--text); font-weight:600; margin-top:4px;}
+  .layer-feats{ display:flex; flex-direction:column; gap:16px; }
+  .feat-row{
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .feat-row svg{ flex-shrink:0; width:17px; height:17px; margin-top:2px; stroke: var(--accent-jade-bright); }
+  .feat-row .t{ font-size:15px; font-weight:600; margin-bottom:2px; }
+  .feat-row .d{ font-size:13.5px; color:var(--text-muted); }
+
+  /* MIGRATION / SUPPORT */
+  .split{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .card{
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 36px;
+  }
+  .card .eyebrow{ margin-bottom: 20px; }
+  .card h3{ font-size:22px; margin-bottom:12px; }
+  .card p{ color:var(--text-muted); font-size:14.5px; margin-bottom:22px; }
+
+  .switch-visual{
+    display:flex; align-items:center; gap:14px;
+    background: var(--bg-card-3);
+    border-radius: 12px;
+    padding: 18px;
+    font-family:'IBM Plex Mono'; font-size:12px;
+  }
+  .switch-visual .old{ color:var(--text-muted); text-decoration: line-through; opacity:.6;}
+  .switch-visual .arrow{ color:var(--accent-jade-bright); }
+  .switch-visual .new{ color:var(--accent-jade-bright); font-weight:500; }
+
+  .clock-visual{
+    display:flex; gap:6px;
+  }
+  .clock-day{
+    flex:1;
+    text-align:center;
+    padding: 12px 0;
+    border-radius:8px;
+    background: var(--bg-card-3);
+    font-family:'IBM Plex Mono'; font-size:11px;
+    color: var(--accent-jade-bright);
+    border: 1px solid var(--border-bright);
+  }
+
+  /* INTEGRATIONS */
+  .integrations{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .int-card{
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 18px;
+    text-align:center;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .int-card:hover{ border-color: var(--border-bright); transform: translateY(-3px); }
+  .int-icon{
+    width:44px; height:44px;
+    margin: 0 auto 14px;
+    border-radius:10px;
+    background: var(--bg-card-2);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .int-icon svg{ width:20px; height:20px; stroke:var(--accent-jade-bright); }
+  .int-card .n{ font-size:13.5px; font-weight:600; }
+  .int-card .t{ font-size:11.5px; color:var(--text-muted); margin-top:2px; font-family:'IBM Plex Mono';}
+
+  /* FINAL CTA */
+  .final-cta{
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 24px;
+    padding: 64px 48px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .final-cta::before{
+    content:'';
+    position:absolute; width:500px; height:500px;
+    background: radial-gradient(circle, rgba(69,214,160,0.14), transparent 70%);
+    top:-200px; left:50%; transform:translateX(-50%);
+  }
+  .final-cta h2{ font-size: clamp(26px,3.4vw,38px); margin-bottom:16px; position:relative; }
+  .final-cta p{ color:var(--text-muted); margin-bottom:30px; position:relative; }
+  .final-cta .hero-ctas{ justify-content:center; position:relative; }
+
+  footer{
+    padding: 50px 0 40px;
+    border-top: 1px solid var(--border);
+  }
+  footer .wrap{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:16px;
+  }
+  footer .f-links{ display:flex; gap:26px; font-size:13.5px; color:var(--text-muted); }
+  footer .copy{ font-size:12.5px; color: var(--text-muted); font-family:'IBM Plex Mono';}
+
+  @media (max-width: 900px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .split{ grid-template-columns:1fr; }
+    .integrations{ grid-template-columns: repeat(2,1fr); }
+    .layer{ grid-template-columns: 44px 1fr; }
+    .layer-label{ grid-column: 2; padding-top:0; }
+    .layer-feats{ grid-column: 1 / -1; margin-top:14px; }
+    .nav-links{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bubble{ animation:none; opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 20l1.6-4.8A8 8 0 1112 20a7.9 7.9 0 01-4-1.1L4 20z" stroke="#08150F" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </span>
+      Threadline
+    </div>
+    <div class="nav-links">
+      <a href="#stack">Product</a>
+      <a href="#migration">Migration</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#support">Support</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost btn-sm">Talk to sales</a>
+      <a href="#" class="btn btn-primary btn-sm">Start free trial</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Built on the official WhatsApp Business API</div>
+      <h1>Every conversation your business has on WhatsApp — <em>in one thread.</em></h1>
+      <p class="sub">Send bulk campaigns, run unlimited chatbot sessions, and let your whole team reply from one shared inbox — without ever exposing a personal number.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Start free trial</a>
+        <a href="#" class="btn btn-ghost">Book a demo</a>
+      </div>
+      <div class="trust-row">
+        <span><i class="dot"></i>Free migration from your current BSP</span>
+        <span><i class="dot"></i>7-day support, every week</span>
+        <span><i class="dot"></i>No coding required to launch</span>
+      </div>
+    </div>
+
+    <div class="phone-stage">
+      <div class="phone">
+        <div class="phone-head">
+          <div class="avatar">S</div>
+          <div>
+            <div class="name">Support · Priya</div>
+            <div class="status">official business account</div>
+          </div>
+        </div>
+        <div class="thread">
+          <div class="bubble in b1">Hi, did my order #4471 ship yet?</div>
+          <div class="bubble tag b2">Auto-reply · Bot</div>
+          <div class="bubble out b3">Checking that for you now…</div>
+          <div class="bubble out b4">Shipped this morning 📦 Tracking: IN4471XZ</div>
+          <div class="bubble tag b5">Routed to Priya · Support inbox</div>
+          <div class="bubble in b6">Great, thank you!</div>
+        </div>
+        <div class="mask-badge">🔒 Number masked · <b>+20 •• ••• 1190</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="ticker">
+      <span class="num" id="tickerNum">8,214</span>
+      <span class="lbl">messages delivered today across all customers</span>
+    </div>
+  </div>
+</header>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it's built</div>
+      <h2>Four layers, one number</h2>
+      <p>Everything runs on top of your official WhatsApp line — nothing bolted on, nothing that breaks when WhatsApp changes its policies.</p>
+    </div>
+
+    <div class="stack">
+      <div class="layer">
+        <div class="layer-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 4h16v12H8l-4 4V4z"/></svg>
+        </div>
+        <div class="layer-label">01<b>Channel</b></div>
+        <div class="layer-feats">
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">Official WhatsApp Business API</div><div class="d">Verified access straight from Meta — no green-checkmark gimmicks, no risk of a ban.</div></div>
+          </div>
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">Send bulk messages</div><div class="d">Reach thousands of customers in one campaign, within WhatsApp's own template rules.</div></div>
+          </div>
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">Hide the customer's number</div><div class="d">Every agent chats through a masked line — no personal number ever changes hands.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        </div>
+        <div class="layer-label">02<b>Automation</b></div>
+        <div class="layer-feats">
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">Unlimited chatbot sessions</div><div class="d">No cap on how many conversations your bot holds at once, or how often it runs.</div></div>
+          </div>
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">AI agent for WhatsApp</div><div class="d">Handles real answers, not just menu buttons, and hands off to a human when it should.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><circle cx="18" cy="7" r="2.2"/><path d="M22 21v-1a5 5 0 00-3-4.6"/></svg>
+        </div>
+        <div class="layer-label">03<b>Team</b></div>
+        <div class="layer-feats">
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">Shared team inbox</div><div class="d">Assign chats, leave internal notes, and see who's replying — no more forwarded screenshots.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-node">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M8 3L3 8l5 5M16 3l5 5-5 5M14 3l-4 18"/></svg>
+        </div>
+        <div class="layer-label">04<b>Connect</b></div>
+        <div class="layer-feats">
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">API &amp; webhook integration</div><div class="d">Push and pull message data into whatever system already runs your business.</div></div>
+          </div>
+          <div class="feat-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            <div><div class="t">Google Sheets, Zapier &amp; Make</div><div class="d">Connect without writing code — sync leads, orders, and replies both ways.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="migration">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Switching made easy</div>
+      <h2>Bring your number. Keep your history.</h2>
+      <p>Moving providers is usually the reason businesses stay put. We handle the move for you.</p>
+    </div>
+
+    <div class="split">
+      <div class="card">
+        <div class="eyebrow">Free migration</div>
+        <h3>From any other BSP, at no cost</h3>
+        <p>Your existing WhatsApp number, templates, and chat history move over — we manage the handover with your current provider so nothing gets lost.</p>
+        <div class="switch-visual">
+          <span class="old">Old provider</span>
+          <span class="arrow">→</span>
+          <span class="new">Threadline</span>
+        </div>
+      </div>
+
+      <div class="card" id="support">
+        <div class="eyebrow">Always reachable</div>
+        <h3>7-day support, every single week</h3>
+        <p>A real person answers on weekdays and weekends — not just during business hours.</p>
+        <div class="clock-visual">
+          <div class="clock-day">Mon</div>
+          <div class="clock-day">Tue</div>
+          <div class="clock-day">Wed</div>
+          <div class="clock-day">Thu</div>
+          <div class="clock-day">Fri</div>
+          <div class="clock-day">Sat</div>
+          <div class="clock-day">Sun</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="integrations">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Plays well with others</div>
+      <h2>Connect it to what you already use</h2>
+      <p>No middleware to maintain — set it up once and let data flow.</p>
+    </div>
+
+    <div class="integrations">
+      <div class="int-card">
+        <div class="int-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg></div>
+        <div class="n">Google Sheets</div>
+        <div class="t">two-way sync</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+        <div class="n">Zapier</div>
+        <div class="t">no-code flows</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="M9.5 10.7l5-2.4M9.5 13.3l5 2.4"/></svg></div>
+        <div class="n">Make</div>
+        <div class="t">automation scenarios</div>
+      </div>
+      <div class="int-card">
+        <div class="int-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M8 3L3 8l5 5M16 3l5 5-5 5M14 3l-4 18"/></svg></div>
+        <div class="n">REST API</div>
+        <div class="t">&amp; webhooks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final-cta">
+      <div class="eyebrow" style="justify-content:center;">Ready when you are</div>
+      <h2>Your customers are already on WhatsApp.<br>Meet them there, properly.</h2>
+      <p>Set up your official number in one session — migration, chatbot, and team inbox included.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Start free trial</a>
+        <a href="#" class="btn btn-ghost">Book a demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="font-size:16px;">
+      <span class="logo-mark" style="width:22px;height:22px;">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 20l1.6-4.8A8 8 0 1112 20a7.9 7.9 0 01-4-1.1L4 20z" stroke="#08150F" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </span>
+      Threadline
+    </div>
+    <div class="f-links">
+      <a href="#stack">Product</a>
+      <a href="#migration">Migration</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#support">Support</a>
+    </div>
+    <div class="copy">© 2026 Threadline</div>
+  </div>
+</footer>
+
+<script>
+  // ticking message counter
+  const el = document.getElementById('tickerNum');
+  let val = 8214;
+  setInterval(() => {
+    val += Math.floor(Math.random() * 4) + 1;
+    el.textContent = val.toLocaleString();
+  }, 2200);
+
+  // restart hero bubble animation loop
+  const thread = document.querySelector('.thread');
+  function restart(){
+    const bubbles = thread.querySelectorAll('.bubble');
+    bubbles.forEach(b => { b.style.animation = 'none'; b.offsetHeight; b.style.animation = ''; });
+  }
+  setInterval(restart, 8000);
+</script>
+
+</body>
+</html>
